@@ -5,6 +5,10 @@ import basemod.interfaces.EditCharactersSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import savestate.StateFactories;
+import savestate.powers.PowerState;
+import theVacant.powers.VoidPower;
+import vacantstate.powers.VoidPowerState;
 
 @SpireInitializer
 public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber, EditCharactersSubscriber {
@@ -14,6 +18,7 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     @Override
     public void receivePostInitialize() {
+        populatePowerFactory();
     }
 
     private void populateCurrentActionsFactory() {
@@ -23,6 +28,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     }
 
     private void populatePowerFactory() {
+        StateFactories.powerByIdMap
+                .put(VoidPower.POWER_ID, new PowerState.PowerFactories(power -> new VoidPowerState(power)));
     }
 
     @Override
