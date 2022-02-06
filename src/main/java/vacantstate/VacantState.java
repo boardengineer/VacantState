@@ -5,10 +5,17 @@ import basemod.interfaces.EditCharactersSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import savestate.CardState;
 import savestate.StateFactories;
 import savestate.powers.PowerState;
+import theVacant.cards.AbstractVacantCard;
 import theVacant.powers.*;
+import vacantstate.cards.AbstractVacantCardState;
 import vacantstate.powers.*;
+
+import java.util.Optional;
 
 @SpireInitializer
 public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber, EditCharactersSubscriber {
@@ -18,6 +25,7 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     @Override
     public void receivePostInitialize() {
+        populateCardFactories();
         populatePowerFactory();
     }
 
@@ -25,6 +33,24 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     }
 
     private void populateCardFactories() {
+        CardState.CardFactories cardFactories = new CardState.CardFactories(card -> {
+            if (card instanceof AbstractVacantCard) {
+                return Optional.of(new AbstractVacantCardState(card));
+            }
+            return Optional.empty();
+        }, json -> {
+            JsonObject parsed = new JsonParser().parse(json).getAsJsonObject();
+            String type = "";
+            if (parsed.has("type")) {
+                type = parsed.get("type").getAsString();
+            }
+            if (type.equals(AbstractVacantCardState.TYPE_KEY)) {
+                return Optional.of(new AbstractVacantCardState(json));
+            }
+            return Optional.empty();
+        });
+
+        StateFactories.cardFactories.add(cardFactories);
     }
 
     private void populatePowerFactory() {
@@ -36,6 +62,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(CleanseSoulPower.POWER_ID, new PowerState.PowerFactories(power -> new CleanseSoulPowerState(power)));
         StateFactories.powerByIdMap
                 .put(DoomPower.POWER_ID, new PowerState.PowerFactories(power -> new DoomPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(MemoriaPower.POWER_ID, new PowerState.PowerFactories(power -> new MemoriaPowerState(power)));
         StateFactories.powerByIdMap
                 .put(ReapPower.POWER_ID, new PowerState.PowerFactories(power -> new ReapPowerState(power)));
         StateFactories.powerByIdMap
