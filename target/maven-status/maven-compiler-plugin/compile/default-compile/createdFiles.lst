@@ -1,1 +1,6 @@
+vacantstate\powers\AquamarinePowerState.class
 vacantstate\VacantState.class
+vacantstate\powers\BurdenBreakPowerState.class
+vacantstate\powers\TemperancePowerState.class
+vacantstate\powers\RecoverPowerState.class
+vacantstate\powers\StandoPowerState.class

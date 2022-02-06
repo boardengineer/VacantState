@@ -7,8 +7,8 @@ import basemod.interfaces.PostInitializeSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import savestate.StateFactories;
 import savestate.powers.PowerState;
-import theVacant.powers.VoidPower;
-import vacantstate.powers.VoidPowerState;
+import theVacant.powers.*;
+import vacantstate.powers.*;
 
 @SpireInitializer
 public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber, EditCharactersSubscriber {
@@ -28,6 +28,16 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     }
 
     private void populatePowerFactory() {
+        StateFactories.powerByIdMap
+                .put(AquamarinePower.POWER_ID, new PowerState.PowerFactories(power -> new AquamarinePowerState(power)));
+        StateFactories.powerByIdMap
+                .put(BurdenBreakPower.POWER_ID, new PowerState.PowerFactories(power -> new BurdenBreakPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(RecoverPower.POWER_ID, new PowerState.PowerFactories(power -> new RecoverPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(StandoPower.POWER_ID, new PowerState.PowerFactories(power -> new StandoPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(TemperancePower.POWER_ID, new PowerState.PowerFactories(power -> new TemperancePowerState(power)));
         StateFactories.powerByIdMap
                 .put(VoidPower.POWER_ID, new PowerState.PowerFactories(power -> new VoidPowerState(power)));
     }
