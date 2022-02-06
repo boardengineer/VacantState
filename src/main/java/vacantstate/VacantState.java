@@ -33,11 +33,21 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.powerByIdMap
                 .put(BurdenBreakPower.POWER_ID, new PowerState.PowerFactories(power -> new BurdenBreakPowerState(power)));
         StateFactories.powerByIdMap
+                .put(CleanseSoulPower.POWER_ID, new PowerState.PowerFactories(power -> new CleanseSoulPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(DoomPower.POWER_ID, new PowerState.PowerFactories(power -> new DoomPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(ReapPower.POWER_ID, new PowerState.PowerFactories(power -> new ReapPowerState(power)));
+        StateFactories.powerByIdMap
                 .put(RecoverPower.POWER_ID, new PowerState.PowerFactories(power -> new RecoverPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(RunicThoughtsPower.POWER_ID, new PowerState.PowerFactories(power -> new RunicThoughtsPowerState(power)));
         StateFactories.powerByIdMap
                 .put(StandoPower.POWER_ID, new PowerState.PowerFactories(power -> new StandoPowerState(power)));
         StateFactories.powerByIdMap
                 .put(TemperancePower.POWER_ID, new PowerState.PowerFactories(power -> new TemperancePowerState(power)));
+        StateFactories.powerByIdMap
+                .put(VoidEmbracePower.POWER_ID, new PowerState.PowerFactories(power -> new VoidEmbracePowerState(power)));
         StateFactories.powerByIdMap
                 .put(VoidPower.POWER_ID, new PowerState.PowerFactories(power -> new VoidPowerState(power)));
     }

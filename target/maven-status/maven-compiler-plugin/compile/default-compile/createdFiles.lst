@@ -1,6 +1,11 @@
 vacantstate\powers\AquamarinePowerState.class
-vacantstate\VacantState.class
+vacantstate\powers\DoomPowerState.class
 vacantstate\powers\BurdenBreakPowerState.class
+vacantstate\powers\ReapPowerState.class
+vacantstate\VacantState.class
 vacantstate\powers\TemperancePowerState.class
+vacantstate\powers\RunicThoughtsPowerState.class
+vacantstate\powers\VoidEmbracePowerState.class
+vacantstate\powers\CleanseSoulPowerState.class
 vacantstate\powers\RecoverPowerState.class
 vacantstate\powers\StandoPowerState.class
