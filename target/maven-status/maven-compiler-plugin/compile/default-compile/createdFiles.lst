@@ -1,5 +1,6 @@
 vacantstate\powers\AquamarinePowerState.class
 vacantstate\powers\DoomPowerState.class
+vacantstate\powers\GloomPowerState.class
 vacantstate\powers\BurdenBreakPowerState.class
 vacantstate\powers\ReapPowerState.class
 vacantstate\VacantState.class
