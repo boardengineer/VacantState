@@ -7,15 +7,18 @@ import basemod.interfaces.PostInitializeSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import savestate.AbstractCardModifierState;
 import savestate.CardState;
 import savestate.StateFactories;
 import savestate.orbs.OrbState;
 import savestate.powers.PowerState;
 import theVacant.cards.AbstractVacantCard;
-import theVacant.cards.Powers.Immaterialize;
+import theVacant.cards.Modifiers.MaterializeModifier;
 import theVacant.cards.Skills.Enchant;
+import theVacant.cards.Special.*;
 import theVacant.orbs.*;
 import theVacant.powers.*;
+import vacantstate.cardmodifiier.MaterializeModifierState;
 import vacantstate.cards.AbstractVacantCardState;
 import vacantstate.orbs.*;
 import vacantstate.powers.*;
@@ -36,9 +39,15 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         populatePowerFactory();
 
         populateOrbFactories();
+        populateCardModifierFactories();
     }
 
     private void populateCurrentActionsFactory() {
+    }
+
+    private void populateCardModifierFactories() {
+        StateFactories.cardModifierFactories
+                .put(MaterializeModifier.ID, new AbstractCardModifierState.CardModifierStateFactories(modifier -> new MaterializeModifierState(modifier), json -> new MaterializeModifierState(json)));
     }
 
     private void populateCardFactories() {
@@ -76,6 +85,9 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(EmeraldOrb.class
                         .getSimpleName(), new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json)));
         StateFactories.orbByClassMap
+                .put(OnyxOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new OnyxOrbState(orb), json -> new OnyxOrbState(json)));
+        StateFactories.orbByClassMap
                 .put(OpalOrb.class
                         .getSimpleName(), new OrbState.OrbFactories(orb -> new OpalOrbState(orb), json -> new OpalOrbState(json)));
         StateFactories.orbByClassMap
@@ -99,6 +111,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.powerByIdMap
                 .put(GloomPower.POWER_ID, new PowerState.PowerFactories(power -> new GloomPowerState(power)));
         StateFactories.powerByIdMap
+                .put(ImmaterializePower.POWER_ID, new PowerState.PowerFactories(power -> new ImmaterializePowerState(power)));
+        StateFactories.powerByIdMap
                 .put(InvisibleGemOrbPower.POWER_ID, new PowerState.PowerFactories(power -> new InvisibleGemOrbPowerState(power)));
         StateFactories.powerByIdMap
                 .put(MemoriaPower.POWER_ID, new PowerState.PowerFactories(power -> new MemoriaPowerState(power)));
@@ -108,6 +122,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(ReapPower.POWER_ID, new PowerState.PowerFactories(power -> new ReapPowerState(power)));
         StateFactories.powerByIdMap
                 .put(RecoverPower.POWER_ID, new PowerState.PowerFactories(power -> new RecoverPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(RequiemPower.POWER_ID, new PowerState.PowerFactories(power -> new RequiemPowerState(power)));
         StateFactories.powerByIdMap
                 .put(RunicThoughtsPower.POWER_ID, new PowerState.PowerFactories(power -> new RunicThoughtsPowerState(power)));
         StateFactories.powerByIdMap
@@ -126,9 +142,15 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     @Override
     public void receiveEditCards() {
+        BaseMod.addCard(new RubyOption());
+        BaseMod.addCard(new SapphireOption());
+        BaseMod.addCard(new OpalOption());
+        BaseMod.addCard(new EmeraldOption());
+        BaseMod.addCard(new OnyxOption());
+        BaseMod.addCard(new DiamondOption());
+        BaseMod.addCard(new AmethystOption());
 
         // Need support for card modifier
-        BaseMod.removeCard(Immaterialize.ID, COLOR_GOLD);
         BaseMod.removeCard(Enchant.ID, COLOR_GOLD);
     }
 }
