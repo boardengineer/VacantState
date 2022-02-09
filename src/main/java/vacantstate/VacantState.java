@@ -1,6 +1,7 @@
 package vacantstate;
 
 import basemod.BaseMod;
+import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
@@ -11,6 +12,8 @@ import savestate.StateFactories;
 import savestate.orbs.OrbState;
 import savestate.powers.PowerState;
 import theVacant.cards.AbstractVacantCard;
+import theVacant.cards.Powers.Immaterialize;
+import theVacant.cards.Skills.Enchant;
 import theVacant.orbs.*;
 import theVacant.powers.*;
 import vacantstate.cards.AbstractVacantCardState;
@@ -19,8 +22,10 @@ import vacantstate.powers.*;
 
 import java.util.Optional;
 
+import static theVacant.characters.TheVacant.Enums.COLOR_GOLD;
+
 @SpireInitializer
-public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber {
+public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber, EditCardsSubscriber {
     public static void initialize() {
         BaseMod.subscribe(new vacantstate.VacantState());
     }
@@ -80,6 +85,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     private void populatePowerFactory() {
         StateFactories.powerByIdMap
+                .put(AbyssPower.POWER_ID, new PowerState.PowerFactories(power -> new AbyssPowerState(power)));
+        StateFactories.powerByIdMap
                 .put(AquamarinePower.POWER_ID, new PowerState.PowerFactories(power -> new AquamarinePowerState(power)));
         StateFactories.powerByIdMap
                 .put(BurdenBreakPower.POWER_ID, new PowerState.PowerFactories(power -> new BurdenBreakPowerState(power)));
@@ -87,6 +94,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(CleanseSoulPower.POWER_ID, new PowerState.PowerFactories(power -> new CleanseSoulPowerState(power)));
         StateFactories.powerByIdMap
                 .put(DoomPower.POWER_ID, new PowerState.PowerFactories(power -> new DoomPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(ForgeSoulPower.POWER_ID, new PowerState.PowerFactories(power -> new ForgeSoulPowerState(power)));
         StateFactories.powerByIdMap
                 .put(GloomPower.POWER_ID, new PowerState.PowerFactories(power -> new GloomPowerState(power)));
         StateFactories.powerByIdMap
@@ -102,6 +111,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.powerByIdMap
                 .put(RunicThoughtsPower.POWER_ID, new PowerState.PowerFactories(power -> new RunicThoughtsPowerState(power)));
         StateFactories.powerByIdMap
+                .put(ShroudPower.POWER_ID, new PowerState.PowerFactories(power -> new ShroudPowerState(power)));
+        StateFactories.powerByIdMap
                 .put(TemperancePower.POWER_ID, new PowerState.PowerFactories(power -> new TemperancePowerState(power)));
         StateFactories.powerByIdMap
                 .put(VoidEmbracePower.POWER_ID, new PowerState.PowerFactories(power -> new VoidEmbracePowerState(power)));
@@ -111,5 +122,13 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     @Override
     public void receiveEditRelics() {
+    }
+
+    @Override
+    public void receiveEditCards() {
+
+        // Need support for card modifier
+        BaseMod.removeCard(Immaterialize.ID, COLOR_GOLD);
+        BaseMod.removeCard(Enchant.ID, COLOR_GOLD);
     }
 }
