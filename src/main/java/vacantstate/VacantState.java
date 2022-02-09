@@ -4,6 +4,7 @@ import basemod.BaseMod;
 import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import battleaimod.BattleAiMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -37,6 +38,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     public void receivePostInitialize() {
         populateCardFactories();
         populatePowerFactory();
+
+        BattleAiMod.cardRankMaps.add(VacantPlayOrder.CARD_RANKS);
 
         populateOrbFactories();
         populateCardModifierFactories();
