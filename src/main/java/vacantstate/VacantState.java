@@ -1,7 +1,6 @@
 package vacantstate;
 
 import basemod.BaseMod;
-import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
@@ -9,28 +8,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import savestate.CardState;
 import savestate.StateFactories;
+import savestate.orbs.OrbState;
 import savestate.powers.PowerState;
 import theVacant.cards.AbstractVacantCard;
-import theVacant.cards.Attacks.*;
-import theVacant.cards.Skills.AwMan;
-import theVacant.cards.Skills.DiamondIsUnbreakable;
-import theVacant.cards.Skills.ShatterAmethyst;
-import theVacant.cards.Skills.Spelunk;
-import theVacant.cards.archive.Attacks.GildedPickaxe;
-import theVacant.cards.archive.Attacks.OnyxBlaster;
-import theVacant.cards.archive.Powers.GotOurPickaxe;
-import theVacant.cards.archive.Powers.Immaterialize;
-import theVacant.cards.archive.Skills.OpalShine;
-import theVacant.cards.archive.Skills.RubyRage;
-import theVacant.characters.TheVacant;
+import theVacant.orbs.*;
 import theVacant.powers.*;
 import vacantstate.cards.AbstractVacantCardState;
+import vacantstate.orbs.*;
 import vacantstate.powers.*;
 
 import java.util.Optional;
 
 @SpireInitializer
-public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber, EditCardsSubscriber {
+public class VacantState implements PostInitializeSubscriber, EditRelicsSubscriber {
     public static void initialize() {
         BaseMod.subscribe(new vacantstate.VacantState());
     }
@@ -39,6 +29,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     public void receivePostInitialize() {
         populateCardFactories();
         populatePowerFactory();
+
+        populateOrbFactories();
     }
 
     private void populateCurrentActionsFactory() {
@@ -65,6 +57,27 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.cardFactories.add(cardFactories);
     }
 
+    private void populateOrbFactories() {
+        StateFactories.orbByClassMap
+                .put(AmethystOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new AmethystOrbState(orb), json -> new AmethystOrbState(json)));
+        StateFactories.orbByClassMap
+                .put(DiamondOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new DiamondOrbState(orb), json -> new DiamondOrbState(json)));
+        StateFactories.orbByClassMap
+                .put(RubyOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json)));
+        StateFactories.orbByClassMap
+                .put(EmeraldOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json)));
+        StateFactories.orbByClassMap
+                .put(OpalOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new OpalOrbState(orb), json -> new OpalOrbState(json)));
+        StateFactories.orbByClassMap
+                .put(SapphireOrb.class
+                        .getSimpleName(), new OrbState.OrbFactories(orb -> new SapphireOrbState(orb), json -> new SapphireOrbState(json)));
+    }
+
     private void populatePowerFactory() {
         StateFactories.powerByIdMap
                 .put(AquamarinePower.POWER_ID, new PowerState.PowerFactories(power -> new AquamarinePowerState(power)));
@@ -77,15 +90,17 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.powerByIdMap
                 .put(GloomPower.POWER_ID, new PowerState.PowerFactories(power -> new GloomPowerState(power)));
         StateFactories.powerByIdMap
+                .put(InvisibleGemOrbPower.POWER_ID, new PowerState.PowerFactories(power -> new InvisibleGemOrbPowerState(power)));
+        StateFactories.powerByIdMap
                 .put(MemoriaPower.POWER_ID, new PowerState.PowerFactories(power -> new MemoriaPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(PickaxePower.POWER_ID, new PowerState.PowerFactories(power -> new PickaxePowerState(power)));
         StateFactories.powerByIdMap
                 .put(ReapPower.POWER_ID, new PowerState.PowerFactories(power -> new ReapPowerState(power)));
         StateFactories.powerByIdMap
                 .put(RecoverPower.POWER_ID, new PowerState.PowerFactories(power -> new RecoverPowerState(power)));
         StateFactories.powerByIdMap
                 .put(RunicThoughtsPower.POWER_ID, new PowerState.PowerFactories(power -> new RunicThoughtsPowerState(power)));
-        StateFactories.powerByIdMap
-                .put(StandoPower.POWER_ID, new PowerState.PowerFactories(power -> new StandoPowerState(power)));
         StateFactories.powerByIdMap
                 .put(TemperancePower.POWER_ID, new PowerState.PowerFactories(power -> new TemperancePowerState(power)));
         StateFactories.powerByIdMap
@@ -96,24 +111,5 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     @Override
     public void receiveEditRelics() {
-    }
-
-    @Override
-    public void receiveEditCards() {
-        BaseMod.removeCard(BackInTheMine.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(RubyRage.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(Spelunk.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(AwMan.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(EmeraldSplash.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(Immaterialize.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(OnyxBlaster.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(OpalFracture.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(OpalShine.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(SapphireStrike.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(ShatterAmethyst.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(TopazFrenzy.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(DiamondIsUnbreakable.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(GildedPickaxe.ID, TheVacant.Enums.COLOR_GOLD);
-        BaseMod.removeCard(GotOurPickaxe.ID, TheVacant.Enums.COLOR_GOLD);
     }
 }
