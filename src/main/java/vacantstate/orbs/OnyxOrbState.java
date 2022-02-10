@@ -1,5 +1,6 @@
 package vacantstate.orbs;
 
+import basemod.ReflectionHacks;
 import com.megacrit.cardcrawl.orbs.AbstractOrb;
 import savestate.orbs.OrbState;
 import theVacant.orbs.OnyxOrb;
@@ -15,6 +16,16 @@ public class OnyxOrbState extends OrbState {
 
     @Override
     public AbstractOrb loadOrb() {
-        return new OnyxOrb(passiveAmount);
+        OnyxOrb result = new OnyxOrb(passiveAmount);
+
+        result.evokeAmount = evokeAmount;
+
+        ReflectionHacks.setPrivate(result, AbstractOrb.class, "baseEvokeAmount", baseEvokeAmount);
+        ReflectionHacks
+                .setPrivate(result, AbstractOrb.class, "basePassiveAmount", basePassiveAmount);
+
+        result.applyFocus();
+
+        return result;
     }
 }
