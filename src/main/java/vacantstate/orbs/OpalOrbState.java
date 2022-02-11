@@ -1,6 +1,5 @@
 package vacantstate.orbs;
 
-import basemod.ReflectionHacks;
 import com.megacrit.cardcrawl.orbs.AbstractOrb;
 import savestate.orbs.OrbState;
 import theVacant.orbs.OpalOrb;
@@ -16,16 +15,7 @@ public class OpalOrbState extends OrbState {
 
     @Override
     public AbstractOrb loadOrb() {
-        OpalOrb result = new OpalOrb(passiveAmount);
-
-        result.evokeAmount = evokeAmount;
-
-        ReflectionHacks.setPrivate(result, AbstractOrb.class, "baseEvokeAmount", baseEvokeAmount);
-        ReflectionHacks
-                .setPrivate(result, AbstractOrb.class, "basePassiveAmount", basePassiveAmount);
-
-        result.applyFocus();
-
+        OpalOrb result = new OpalOrb(basePassiveAmount);
         return result;
     }
 }
