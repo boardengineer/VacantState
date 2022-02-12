@@ -16,11 +16,13 @@ import savestate.powers.PowerState;
 import theVacant.cards.AbstractVacantCard;
 import theVacant.cards.Modifiers.MaterializeModifier;
 import theVacant.cards.Skills.Enchant;
+import theVacant.cards.Skills.Sneeze;
 import theVacant.cards.Special.*;
 import theVacant.orbs.*;
 import theVacant.powers.*;
 import vacantstate.cardmodifiier.MaterializeModifierState;
 import vacantstate.cards.AbstractVacantCardState;
+import vacantstate.cards.SneezeState;
 import vacantstate.orbs.*;
 import vacantstate.powers.*;
 
@@ -54,6 +56,20 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     }
 
     private void populateCardFactories() {
+        // TODO add a single lookup instead of a bunch of conditionals
+        CardState.CardFactories sneezeFactories = new CardState.CardFactories(card -> {
+            if (card instanceof Sneeze) {
+                return Optional.of(new SneezeState(card));
+            }
+            return Optional.empty();
+        }, json -> {
+            JsonObject parsed = new JsonParser().parse(json).getAsJsonObject();
+            if (parsed.get("card_id").getAsString().equals(Sneeze.ID)) {
+                return Optional.of(new SneezeState(json));
+            }
+            return Optional.empty();
+        });
+
         CardState.CardFactories cardFactories = new CardState.CardFactories(card -> {
             if (card instanceof AbstractVacantCard) {
                 return Optional.of(new AbstractVacantCardState(card));
@@ -71,6 +87,7 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
             return Optional.empty();
         });
 
+        StateFactories.cardFactories.add(sneezeFactories);
         StateFactories.cardFactories.add(cardFactories);
     }
 
