@@ -93,7 +93,6 @@ public class VacantPlayOrder {
         put(GraveWave.ID, size++);
         put(BackInTheMine.ID, size++);
 
-
         // Blocks
         put(Fortify.ID, size++);
         put(Dig.ID, size++);

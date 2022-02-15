@@ -47,9 +47,6 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         populateCardModifierFactories();
     }
 
-    private void populateCurrentActionsFactory() {
-    }
-
     private void populateCardModifierFactories() {
         StateFactories.cardModifierFactories
                 .put(MaterializeModifier.ID, new AbstractCardModifierState.CardModifierStateFactories(modifier -> new MaterializeModifierState(modifier), json -> new MaterializeModifierState(json)));
