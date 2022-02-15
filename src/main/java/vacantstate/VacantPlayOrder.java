@@ -1,10 +1,12 @@
 package vacantstate;
 
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.curses.Pain;
 import theVacant.cards.Attacks.*;
 import theVacant.cards.Powers.*;
 import theVacant.cards.Skills.*;
 
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class VacantPlayOrder {
@@ -107,4 +109,13 @@ public class VacantPlayOrder {
         // Unplayables
         put(TheAnvil.ID, size++);
     }};
+
+    public static final Comparator<AbstractCard> COMPARATOR = (card1, card2) -> {
+        if (CARD_RANKS.containsKey(card1.cardID) && CARD_RANKS
+                .containsKey(card2.cardID)) {
+            return CARD_RANKS.get(card1.cardID) - CARD_RANKS
+                    .get(card2.cardID);
+        }
+        return 0;
+    };
 }

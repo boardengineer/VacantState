@@ -41,7 +41,7 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         populateCardFactories();
         populatePowerFactory();
 
-        BattleAiMod.cardRankMaps.add(VacantPlayOrder.CARD_RANKS);
+        BattleAiMod.cardPlayHeuristics.add(VacantPlayOrder.COMPARATOR);
 
         populateOrbFactories();
         populateCardModifierFactories();
