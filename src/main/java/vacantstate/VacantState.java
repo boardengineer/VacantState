@@ -1,10 +1,12 @@
 package vacantstate;
 
 import basemod.BaseMod;
+import basemod.ReflectionHacks;
 import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import battleaimod.BattleAiMod;
+import battleaimod.SilentLogger;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,6 +22,7 @@ import theVacant.cards.Skills.Sneeze;
 import theVacant.cards.Special.*;
 import theVacant.orbs.*;
 import theVacant.powers.*;
+import theVacant.util.TextureLoader;
 import vacantstate.cardmodifiier.MaterializeModifierState;
 import vacantstate.cards.AbstractVacantCardState;
 import vacantstate.cards.SneezeState;
@@ -45,6 +48,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
         populateOrbFactories();
         populateCardModifierFactories();
+
+        ReflectionHacks.setPrivateStaticFinal(TextureLoader.class, "logger", new SilentLogger());
     }
 
     private void populateCardModifierFactories() {

@@ -57,7 +57,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: theVacant:theVacant:v0.17.1">
+      <library name="Maven: theVacant:theVacant:v0.18.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../_ModTheSpire/mods/theVacant.jar!/" />
         </CLASSES>
@@ -78,6 +78,15 @@
       <library name="Maven: com.evacipated.cardcrawl.mod:StSLib:1.3.2">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../_ModTheSpire/mods/StSLib.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../_ModTheSpire/desktop-1.0-patched.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
