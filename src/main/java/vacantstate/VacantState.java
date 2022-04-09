@@ -13,8 +13,11 @@ import com.google.gson.JsonParser;
 import savestate.AbstractCardModifierState;
 import savestate.CardState;
 import savestate.StateFactories;
+import savestate.actions.ActionState;
 import savestate.orbs.OrbState;
 import savestate.powers.PowerState;
+import theVacant.actions.ReduceOrbSizeAction;
+import theVacant.actions.VacantMillAction;
 import theVacant.cards.AbstractVacantCard;
 import theVacant.cards.Modifiers.MaterializeModifier;
 import theVacant.cards.Skills.Enchant;
@@ -23,6 +26,8 @@ import theVacant.cards.Special.*;
 import theVacant.orbs.*;
 import theVacant.powers.*;
 import theVacant.util.TextureLoader;
+import vacantstate.actions.ReduceOrbSizeActionState;
+import vacantstate.actions.VacantMillActionState;
 import vacantstate.cardmodifiier.MaterializeModifierState;
 import vacantstate.cards.AbstractVacantCardState;
 import vacantstate.cards.SneezeState;
@@ -48,8 +53,16 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
         populateOrbFactories();
         populateCardModifierFactories();
+        popualteActionFactories();
 
         ReflectionHacks.setPrivateStaticFinal(TextureLoader.class, "logger", new SilentLogger());
+    }
+
+    private void popualteActionFactories() {
+        StateFactories.actionByClassMap
+                .put(ReduceOrbSizeAction.class, new ActionState.ActionFactories(action -> new ReduceOrbSizeActionState(action)));
+        StateFactories.actionByClassMap
+                .put(VacantMillAction.class, new ActionState.ActionFactories(action -> new VacantMillActionState(action)));
     }
 
     private void populateCardModifierFactories() {
