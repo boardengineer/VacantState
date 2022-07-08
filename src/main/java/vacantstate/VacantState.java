@@ -8,8 +8,6 @@ import basemod.interfaces.PostInitializeSubscriber;
 import battleaimod.BattleAiMod;
 import battleaimod.SilentLogger;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import savestate.AbstractCardModifierState;
 import savestate.CardState;
 import savestate.StateFactories;
@@ -32,8 +30,6 @@ import vacantstate.cards.SneezeState;
 import vacantstate.orbs.*;
 import vacantstate.powers.*;
 
-import java.util.Optional;
-
 import static theVacant.characters.TheVacant.Enums.COLOR_GOLD;
 
 @SpireInitializer
@@ -44,6 +40,10 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     @Override
     public void receivePostInitialize() {
+        populateMaps();
+    }
+
+    public static void populateMaps() {
         populateCardFactories();
         populatePowerFactory();
 
@@ -56,7 +56,7 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         ReflectionHacks.setPrivateStaticFinal(TextureLoader.class, "logger", new SilentLogger());
     }
 
-    private void popualteActionFactories() {
+    private static void popualteActionFactories() {
         StateFactories.actionByClassMap
                 .put(ChipOrbAction.class, new ActionState.ActionFactories(action -> new ChipOrbActionState(action)));
         StateFactories.actionByClassMap
@@ -69,72 +69,54 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(VacantMillAction.class, new ActionState.ActionFactories(action -> new VacantMillActionState(action)));
     }
 
-    private void populateCardModifierFactories() {
+    private static void populateCardModifierFactories() {
         StateFactories.cardModifierFactories
                 .put(MaterializeModifier.ID, new AbstractCardModifierState.CardModifierStateFactories(modifier -> new MaterializeModifierState(modifier), json -> new MaterializeModifierState(json)));
     }
 
-    private void populateCardFactories() {
-        // TODO add a single lookup instead of a bunch of conditionals
-        CardState.CardFactories sneezeFactories = new CardState.CardFactories(card -> {
-            if (card instanceof Sneeze) {
-                return Optional.of(new SneezeState(card));
-            }
-            return Optional.empty();
-        }, json -> {
-            JsonObject parsed = new JsonParser().parse(json).getAsJsonObject();
-            if (parsed.get("card_id").getAsString().equals(Sneeze.ID)) {
-                return Optional.of(new SneezeState(json));
-            }
-            return Optional.empty();
-        });
+    private static void populateCardFactories() {
+        StateFactories.cardFactoriesByType
+                .put(Sneeze.class, new CardState.CardFactories(card -> new SneezeState(card), json -> new SneezeState(json)));
+        StateFactories.cardFactoriesByCardId
+                .put(Sneeze.ID, new CardState.CardFactories(card -> new SneezeState(card), json -> new SneezeState(json)));
 
-        CardState.CardFactories cardFactories = new CardState.CardFactories(card -> {
-            if (card instanceof AbstractVacantCard) {
-                return Optional.of(new AbstractVacantCardState(card));
-            }
-            return Optional.empty();
-        }, json -> {
-            JsonObject parsed = new JsonParser().parse(json).getAsJsonObject();
-            String type = "";
-            if (parsed.has("type")) {
-                type = parsed.get("type").getAsString();
-            }
-            if (type.equals(AbstractVacantCardState.TYPE_KEY)) {
-                return Optional.of(new AbstractVacantCardState(json));
-            }
-            return Optional.empty();
-        });
-
-        StateFactories.cardFactories.add(sneezeFactories);
-        StateFactories.cardFactories.add(cardFactories);
+        StateFactories.cardFactoriesByType
+                .put(AbstractVacantCard.class, new CardState.CardFactories(card -> new AbstractVacantCardState(card), json -> new AbstractVacantCardState(json)));
+        StateFactories.cardFactoriesByTypeName
+                .put(AbstractVacantCardState.TYPE_KEY, new CardState.CardFactories(card -> new AbstractVacantCardState(card), json -> new AbstractVacantCardState(json)));
     }
 
-    private void populateOrbFactories() {
+    private static void populateOrbFactories() {
         StateFactories.orbByClassMap
-                .put(AmethystOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new AmethystOrbState(orb), json -> new AmethystOrbState(json)));
+                .put(AmethystOrb.class, new OrbState.OrbFactories(orb -> new AmethystOrbState(orb), json -> new AmethystOrbState(json)));
+        StateFactories.orbClassByName.put(AmethystOrb.class.getSimpleName(), AmethystOrb.class);
+
         StateFactories.orbByClassMap
-                .put(DiamondOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new DiamondOrbState(orb), json -> new DiamondOrbState(json)));
+                .put(DiamondOrb.class, new OrbState.OrbFactories(orb -> new DiamondOrbState(orb), json -> new DiamondOrbState(json)));
+        StateFactories.orbClassByName.put(DiamondOrb.class.getSimpleName(), DiamondOrb.class);
+
         StateFactories.orbByClassMap
-                .put(RubyOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json)));
+                .put(RubyOrb.class, new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json)));
+        StateFactories.orbClassByName.put(RubyOrb.class.getSimpleName(), RubyOrb.class);
+
         StateFactories.orbByClassMap
-                .put(EmeraldOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json)));
+                .put(EmeraldOrb.class, new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json)));
+        StateFactories.orbClassByName.put(EmeraldOrb.class.getSimpleName(), EmeraldOrb.class);
+
         StateFactories.orbByClassMap
-                .put(OnyxOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new OnyxOrbState(orb), json -> new OnyxOrbState(json)));
+                .put(OnyxOrb.class, new OrbState.OrbFactories(orb -> new OnyxOrbState(orb), json -> new OnyxOrbState(json)));
+        StateFactories.orbClassByName.put(OnyxOrb.class.getSimpleName(), OnyxOrb.class);
+
         StateFactories.orbByClassMap
-                .put(OpalOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new OpalOrbState(orb), json -> new OpalOrbState(json)));
+                .put(OpalOrb.class, new OrbState.OrbFactories(orb -> new OpalOrbState(orb), json -> new OpalOrbState(json)));
+        StateFactories.orbClassByName.put(OpalOrb.class.getSimpleName(), OpalOrb.class);
+
         StateFactories.orbByClassMap
-                .put(SapphireOrb.class
-                        .getSimpleName(), new OrbState.OrbFactories(orb -> new SapphireOrbState(orb), json -> new SapphireOrbState(json)));
+                .put(SapphireOrb.class, new OrbState.OrbFactories(orb -> new SapphireOrbState(orb), json -> new SapphireOrbState(json)));
+        StateFactories.orbClassByName.put(SapphireOrb.class.getSimpleName(), SapphireOrb.class);
     }
 
-    private void populatePowerFactory() {
+    private static void populatePowerFactory() {
         StateFactories.powerByIdMap
                 .put(AbyssPower.POWER_ID, new PowerState.PowerFactories(power -> new AbyssPowerState(power)));
         StateFactories.powerByIdMap
