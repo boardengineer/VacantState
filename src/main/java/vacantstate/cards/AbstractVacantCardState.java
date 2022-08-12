@@ -36,6 +36,15 @@ public class AbstractVacantCardState extends CardState {
         this.postMillAction = parsed.get("postMillAction").getAsBoolean();
     }
 
+    public AbstractVacantCardState(JsonObject cardJson) {
+        super(cardJson);
+
+        this.rebound = cardJson.get("rebound").getAsBoolean();
+        this.getBonusMillToMagic = cardJson.get("getBonusMillToMagic").getAsBoolean();
+        this.isHeavy = cardJson.get("isHeavy").getAsBoolean();
+        this.postMillAction = cardJson.get("postMillAction").getAsBoolean();
+    }
+
     @Override
     public AbstractCard loadCard() {
         AbstractVacantCard result = (AbstractVacantCard) super.loadCard();
@@ -62,5 +71,19 @@ public class AbstractVacantCardState extends CardState {
         parsed.addProperty("type", TYPE_KEY);
 
         return parsed.toString();
+    }
+
+    @Override
+    public JsonObject jsonEncode() {
+        JsonObject result = super.jsonEncode();
+
+        result.addProperty("rebound", rebound);
+        result.addProperty("getBonusMillToMagic", getBonusMillToMagic);
+        result.addProperty("isHeavy", isHeavy);
+        result.addProperty("postMillAction", postMillAction);
+
+        result.addProperty("type", TYPE_KEY);
+
+        return result;
     }
 }

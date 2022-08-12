@@ -24,6 +24,12 @@ public class SneezeState extends CardState {
         this.retainBonus = parsed.get("retainBonus").getAsInt();
     }
 
+    public SneezeState(JsonObject cardJson) {
+        super(cardJson);
+
+        this.retainBonus = cardJson.get("retainBonus").getAsInt();
+    }
+
     @Override
     public AbstractCard loadCard() {
         AbstractCard result = super.loadCard();
@@ -42,5 +48,14 @@ public class SneezeState extends CardState {
         parsed.addProperty("retainBonus", retainBonus);
 
         return parsed.toString();
+    }
+
+    @Override
+    public JsonObject jsonEncode() {
+        JsonObject result = super.jsonEncode();
+
+        result.addProperty("retainBonus", retainBonus);
+
+        return result;
     }
 }

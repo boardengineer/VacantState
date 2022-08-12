@@ -1,5 +1,6 @@
 package vacantstate.orbs;
 
+import com.google.gson.JsonObject;
 import com.megacrit.cardcrawl.orbs.AbstractOrb;
 import savestate.orbs.OrbState;
 import theVacant.orbs.OpalOrb;
@@ -11,6 +12,10 @@ public class OpalOrbState extends OrbState {
 
     public OpalOrbState(String jsonString) {
         super(jsonString);
+    }
+
+    public OpalOrbState(JsonObject orbJson) {
+        super(orbJson);
     }
 
     @Override

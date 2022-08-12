@@ -75,44 +75,42 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
     }
 
     private static void populateCardFactories() {
-        StateFactories.cardFactoriesByType
-                .put(Sneeze.class, new CardState.CardFactories(card -> new SneezeState(card), json -> new SneezeState(json)));
-        StateFactories.cardFactoriesByCardId
-                .put(Sneeze.ID, new CardState.CardFactories(card -> new SneezeState(card), json -> new SneezeState(json)));
+        CardState.CardFactories sneezeFactories = new CardState.CardFactories(card -> new SneezeState(card), json -> new SneezeState(json), jsonObject -> new SneezeState(jsonObject));
+        StateFactories.cardFactoriesByType.put(Sneeze.class, sneezeFactories);
+        StateFactories.cardFactoriesByCardId.put(Sneeze.ID, sneezeFactories);
 
-        StateFactories.cardFactoriesByType
-                .put(AbstractVacantCard.class, new CardState.CardFactories(card -> new AbstractVacantCardState(card), json -> new AbstractVacantCardState(json)));
-        StateFactories.cardFactoriesByTypeName
-                .put(AbstractVacantCardState.TYPE_KEY, new CardState.CardFactories(card -> new AbstractVacantCardState(card), json -> new AbstractVacantCardState(json)));
+        CardState.CardFactories vacantCardFactories = new CardState.CardFactories(card -> new AbstractVacantCardState(card), json -> new AbstractVacantCardState(json), jsonObject -> new AbstractVacantCardState(jsonObject));
+        StateFactories.cardFactoriesByType.put(AbstractVacantCard.class, vacantCardFactories);
+        StateFactories.cardFactoriesByTypeName.put(AbstractVacantCardState.TYPE_KEY, vacantCardFactories);
     }
 
     private static void populateOrbFactories() {
         StateFactories.orbByClassMap
-                .put(AmethystOrb.class, new OrbState.OrbFactories(orb -> new AmethystOrbState(orb), json -> new AmethystOrbState(json)));
+                .put(AmethystOrb.class, new OrbState.OrbFactories(orb -> new AmethystOrbState(orb), json -> new AmethystOrbState(json), jsonObject -> new AmethystOrbState(jsonObject)));
         StateFactories.orbClassByName.put(AmethystOrb.class.getSimpleName(), AmethystOrb.class);
 
         StateFactories.orbByClassMap
-                .put(DiamondOrb.class, new OrbState.OrbFactories(orb -> new DiamondOrbState(orb), json -> new DiamondOrbState(json)));
+                .put(DiamondOrb.class, new OrbState.OrbFactories(orb -> new DiamondOrbState(orb), json -> new DiamondOrbState(json), jsonObject -> new DiamondOrbState(jsonObject)));
         StateFactories.orbClassByName.put(DiamondOrb.class.getSimpleName(), DiamondOrb.class);
 
         StateFactories.orbByClassMap
-                .put(RubyOrb.class, new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json)));
+                .put(RubyOrb.class, new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json), jsonObject -> new RubyOrbState(jsonObject)));
         StateFactories.orbClassByName.put(RubyOrb.class.getSimpleName(), RubyOrb.class);
 
         StateFactories.orbByClassMap
-                .put(EmeraldOrb.class, new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json)));
+                .put(EmeraldOrb.class, new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json), jsonObject -> new EmeraldOrbState(jsonObject)));
         StateFactories.orbClassByName.put(EmeraldOrb.class.getSimpleName(), EmeraldOrb.class);
 
         StateFactories.orbByClassMap
-                .put(OnyxOrb.class, new OrbState.OrbFactories(orb -> new OnyxOrbState(orb), json -> new OnyxOrbState(json)));
+                .put(OnyxOrb.class, new OrbState.OrbFactories(orb -> new OnyxOrbState(orb), json -> new OnyxOrbState(json), jsonObject -> new OnyxOrbState(jsonObject)));
         StateFactories.orbClassByName.put(OnyxOrb.class.getSimpleName(), OnyxOrb.class);
 
         StateFactories.orbByClassMap
-                .put(OpalOrb.class, new OrbState.OrbFactories(orb -> new OpalOrbState(orb), json -> new OpalOrbState(json)));
+                .put(OpalOrb.class, new OrbState.OrbFactories(orb -> new OpalOrbState(orb), json -> new OpalOrbState(json), jsonObject -> new OpalOrbState(jsonObject)));
         StateFactories.orbClassByName.put(OpalOrb.class.getSimpleName(), OpalOrb.class);
 
         StateFactories.orbByClassMap
-                .put(SapphireOrb.class, new OrbState.OrbFactories(orb -> new SapphireOrbState(orb), json -> new SapphireOrbState(json)));
+                .put(SapphireOrb.class, new OrbState.OrbFactories(orb -> new SapphireOrbState(orb), json -> new SapphireOrbState(json), jsonObject -> new SapphireOrbState(jsonObject)));
         StateFactories.orbClassByName.put(SapphireOrb.class.getSimpleName(), SapphireOrb.class);
     }
 
