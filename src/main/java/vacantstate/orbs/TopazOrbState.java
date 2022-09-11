@@ -3,25 +3,26 @@ package vacantstate.orbs;
 import com.google.gson.JsonObject;
 import com.megacrit.cardcrawl.orbs.AbstractOrb;
 import savestate.orbs.OrbState;
-import theVacant.orbs.OnyxOrb;
+import theVacant.orbs.TopazOrb;
 import vacantstate.VacantState;
 
-public class OnyxOrbState extends OrbState {
-    public OnyxOrbState(AbstractOrb orb) {
+public class TopazOrbState extends OrbState {
+
+    public TopazOrbState(AbstractOrb orb) {
         super(orb);
     }
 
-    public OnyxOrbState(String jsonString) {
+    public TopazOrbState(String jsonString) {
         super(jsonString);
     }
 
-    public OnyxOrbState(JsonObject orbJson) {
+    public TopazOrbState(JsonObject orbJson) {
         super(orbJson);
     }
 
     @Override
     public AbstractOrb loadOrb() {
-        OnyxOrb result = new OnyxOrb(basePassiveAmount - VacantState.getBonusSize());
+        TopazOrb result = new TopazOrb(basePassiveAmount - VacantState.getBonusSize());
 
         return result;
     }

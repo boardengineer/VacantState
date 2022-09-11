@@ -49,7 +49,7 @@ public class VacantPlayOrder {
         put(Spelunk.ID, size++);
         put(Memoria.ID, size++);
         put(Unearth.ID, size++);
-        put(AbsorbAmethyst.ID, size++);
+//        put(AbsorbAmethyst.ID, size++);
         put(OpalFracture.ID, size++);
         put(TopazFrenzy.ID, size++);
         put(OpalShine.ID, size++);
@@ -69,7 +69,7 @@ public class VacantPlayOrder {
         put(ReaperBlast.ID, size++);
 
         // Attacks
-        put(Threat.ID, size++);
+//        put(Threat.ID, size++);
         put(SoulBarrage.ID, size++);
         put(SoulBash.ID, size++);
         put(OnyxBlaster.ID, size++);

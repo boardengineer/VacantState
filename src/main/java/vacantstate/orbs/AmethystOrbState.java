@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.megacrit.cardcrawl.orbs.AbstractOrb;
 import savestate.orbs.OrbState;
 import theVacant.orbs.AmethystOrb;
+import vacantstate.VacantState;
 
 public class AmethystOrbState extends OrbState {
     public AmethystOrbState(AbstractOrb orb) {
@@ -20,7 +21,7 @@ public class AmethystOrbState extends OrbState {
 
     @Override
     public AbstractOrb loadOrb() {
-        AmethystOrb result = new AmethystOrb(basePassiveAmount);
+        AmethystOrb result = new AmethystOrb(basePassiveAmount - VacantState.getBonusSize());
         return result;
     }
 }

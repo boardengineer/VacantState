@@ -24,6 +24,12 @@ public class MaterializeModifierState extends AbstractCardModifierState {
         this.amount = parsed.get("amount").getAsInt();
     }
 
+    public MaterializeModifierState(JsonObject modifierJson) {
+        super(modifierJson);
+
+        this.amount = modifierJson.get("amount").getAsInt();
+    }
+
     @Override
     public AbstractCardModifier loadModifier() {
         return new MaterializeModifier(amount);
@@ -36,5 +42,14 @@ public class MaterializeModifierState extends AbstractCardModifierState {
         parsed.addProperty("amount", amount);
 
         return parsed.toString();
+    }
+
+    @Override
+    public JsonObject jsonEncode() {
+        JsonObject result = super.jsonEncode();
+
+        result.addProperty("amount", amount);
+
+        return result;
     }
 }

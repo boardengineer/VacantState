@@ -39,15 +39,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: savestatemod:savestatemod:1.0">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../_ModTheSpire/mods/SaveStateMod.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
       <library name="Maven: LudicrousSpeed:LudicrousSpeed:1.0.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../_ModTheSpire/mods/LudicrousSpeed.jar!/" />
@@ -92,5 +83,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="SaveStateMod" />
   </component>
 </module>

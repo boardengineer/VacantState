@@ -8,6 +8,7 @@ import basemod.interfaces.PostInitializeSubscriber;
 import battleaimod.BattleAiMod;
 import battleaimod.SilentLogger;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import savestate.AbstractCardModifierState;
 import savestate.CardState;
 import savestate.StateFactories;
@@ -22,6 +23,7 @@ import theVacant.cards.Skills.Sneeze;
 import theVacant.cards.Special.*;
 import theVacant.orbs.*;
 import theVacant.powers.*;
+import theVacant.relics.RagRelic;
 import theVacant.util.TextureLoader;
 import vacantstate.actions.*;
 import vacantstate.cardmodifiier.MaterializeModifierState;
@@ -71,7 +73,7 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
     private static void populateCardModifierFactories() {
         StateFactories.cardModifierFactories
-                .put(MaterializeModifier.ID, new AbstractCardModifierState.CardModifierStateFactories(modifier -> new MaterializeModifierState(modifier), json -> new MaterializeModifierState(json)));
+                .put(MaterializeModifier.ID, new AbstractCardModifierState.CardModifierStateFactories(modifier -> new MaterializeModifierState(modifier), json -> new MaterializeModifierState(json), jsonObject -> new MaterializeModifierState(jsonObject)));
     }
 
     private static void populateCardFactories() {
@@ -94,10 +96,6 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.orbClassByName.put(DiamondOrb.class.getSimpleName(), DiamondOrb.class);
 
         StateFactories.orbByClassMap
-                .put(RubyOrb.class, new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json), jsonObject -> new RubyOrbState(jsonObject)));
-        StateFactories.orbClassByName.put(RubyOrb.class.getSimpleName(), RubyOrb.class);
-
-        StateFactories.orbByClassMap
                 .put(EmeraldOrb.class, new OrbState.OrbFactories(orb -> new EmeraldOrbState(orb), json -> new EmeraldOrbState(json), jsonObject -> new EmeraldOrbState(jsonObject)));
         StateFactories.orbClassByName.put(EmeraldOrb.class.getSimpleName(), EmeraldOrb.class);
 
@@ -110,8 +108,16 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
         StateFactories.orbClassByName.put(OpalOrb.class.getSimpleName(), OpalOrb.class);
 
         StateFactories.orbByClassMap
+                .put(RubyOrb.class, new OrbState.OrbFactories(orb -> new RubyOrbState(orb), json -> new RubyOrbState(json), jsonObject -> new RubyOrbState(jsonObject)));
+        StateFactories.orbClassByName.put(RubyOrb.class.getSimpleName(), RubyOrb.class);
+
+        StateFactories.orbByClassMap
                 .put(SapphireOrb.class, new OrbState.OrbFactories(orb -> new SapphireOrbState(orb), json -> new SapphireOrbState(json), jsonObject -> new SapphireOrbState(jsonObject)));
         StateFactories.orbClassByName.put(SapphireOrb.class.getSimpleName(), SapphireOrb.class);
+
+        StateFactories.orbByClassMap
+                .put(TopazOrb.class, new OrbState.OrbFactories(orb -> new TopazOrbState(orb), json -> new TopazOrbState(json), jsonObject -> new TopazOrbState(jsonObject)));
+        StateFactories.orbClassByName.put(TopazOrb.class.getSimpleName(), TopazOrb.class);
     }
 
     private static void populatePowerFactory() {
@@ -123,6 +129,10 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(BurdenBreakPower.POWER_ID, new PowerState.PowerFactories(power -> new BurdenBreakPowerState(power)));
         StateFactories.powerByIdMap
                 .put(CleanseSoulPower.POWER_ID, new PowerState.PowerFactories(power -> new CleanseSoulPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(DarknessPower.POWER_ID, new PowerState.PowerFactories(power -> new DarknessPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(DoubleNextAttackPower.POWER_ID, new PowerState.PowerFactories(power -> new DoubleNextAttackPowerState(power)));
         StateFactories.powerByIdMap
                 .put(DoomPower.POWER_ID, new PowerState.PowerFactories(power -> new DoomPowerState(power)));
         StateFactories.powerByIdMap
@@ -141,6 +151,8 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
                 .put(ReapPower.POWER_ID, new PowerState.PowerFactories(power -> new ReapPowerState(power)));
         StateFactories.powerByIdMap
                 .put(RecoverPower.POWER_ID, new PowerState.PowerFactories(power -> new RecoverPowerState(power)));
+        StateFactories.powerByIdMap
+                .put(ReflectionPower.POWER_ID, new PowerState.PowerFactories(power -> new ReflectionPowerState(power)));
         StateFactories.powerByIdMap
                 .put(RequiemPower.POWER_ID, new PowerState.PowerFactories(power -> new RequiemPowerState(power)));
         StateFactories.powerByIdMap
@@ -171,5 +183,14 @@ public class VacantState implements PostInitializeSubscriber, EditRelicsSubscrib
 
         // Need support for card modifier
         BaseMod.removeCard(Enchant.ID, COLOR_GOLD);
+    }
+
+    public static int getBonusSize() {
+        if (AbstractDungeon.player != null && AbstractDungeon.player.hasRelic(RagRelic.ID)) {
+            AbstractDungeon.player.getRelic(RagRelic.ID).flash();
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
